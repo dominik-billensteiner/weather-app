@@ -11,7 +11,7 @@ const lowTempMax = 9;
 const lowTempMin = -20;
 
 // sfc = stateless functional component
-const WeatherCard = ({ temperature, condition }) => {
+const WeatherCard = ({ city, country, temperature, condition }) => {
   let highColor = 0;
   let lowColor = 0;
   let tempBg = null;
@@ -61,7 +61,7 @@ const WeatherCard = ({ temperature, condition }) => {
 
   return (
     <div className="card" style={tempBg}>
-      <Location />
+      <Location city={city} country={country} />
       <Icon condition={condition} />
       <Condition temperature={temperature} condition={condition} />
     </div>

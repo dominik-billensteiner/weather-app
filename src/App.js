@@ -5,9 +5,19 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <WeatherCard temperature="5" condition="Rain" />
-      <WeatherCard temperature="33" condition="Clear" />
-      <WeatherCard temperature="25" condition="Thunderstorm" />
+      <WeatherCard city="Linz" country="AT" temperature="5" condition="Rain" />
+      <WeatherCard
+        city="Wien"
+        country="AT"
+        temperature="33"
+        condition="Clear"
+      />
+      <WeatherCard
+        city="St. Pölten"
+        country="AT"
+        temperature="25"
+        condition="Thunderstorm"
+      />
     </div>
   );
 }

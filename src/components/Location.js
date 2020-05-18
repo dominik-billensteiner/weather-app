@@ -1,10 +1,10 @@
 import React from "react";
 
-const Location = (props) => {
+const Location = ({ city, country }) => {
   return (
     <div className="card__location">
-      <h1 className="location__city">Vienna</h1>
-      <h3 className="location__country">AT</h3>
+      <h1 className="location__city">{city}</h1>
+      <h3 className="location__country">{country}</h3>
     </div>
   );
 };
