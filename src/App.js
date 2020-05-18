@@ -1,12 +1,12 @@
 import React from "react";
-import WeatherApp from "./components/WeatherApp";
+import WeatherCard from "./components/WeatherCard";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <WeatherApp temp="5" condition="Clear" />
-      <WeatherApp temp="33" condition="Clouds" />
+      <WeatherCard temp="5" condition="Clear" />
+      <WeatherCard temp="33" condition="Clouds" />
     </div>
   );
 }

@@ -11,7 +11,7 @@ const lowTempMax = 9;
 const lowTempMin = -20;
 
 // sfc = stateless functional component
-const WeatherApp = (props) => {
+const WeatherCard = (props) => {
   let highColor = 0;
   let lowColor = 0;
   let tempBg = null;
@@ -67,7 +67,7 @@ const WeatherApp = (props) => {
   );
 };
 
-export default WeatherApp;
+export default WeatherCard;
 
 /* Hot weater temp
  * tMin = 25°C; tMax = 40°C
