@@ -11,17 +11,18 @@ const lowTempMax = 9;
 const lowTempMin = -20;
 
 // sfc = stateless functional component
-const WeatherCard = (props) => {
+const WeatherCard = ({ temperature, condition }) => {
   let highColor = 0;
   let lowColor = 0;
   let tempBg = null;
 
-  if (props.temp >= 12) {
+  if (temperature >= 12) {
     // "high" redish background
     highColor =
-      (1 - (props.temp - highTempMin) / (highTempMax - highTempMin)) * 255;
+      (1 - (temperature - highTempMin) / (highTempMax - highTempMin)) * 255;
     lowColor = highColor / 150;
-    // Prepare background style
+
+    // Prepare background style based on temperature
     tempBg = {
       background: `linear-gradient(
         to top, 
@@ -29,10 +30,10 @@ const WeatherCard = (props) => {
         rgb(255, ${lowColor}, 0)
         )`,
     };
-  } /*else if (props.temp < 25 && props.temp > 10) {
+  } /*else if (temperature  < 25 && temperature  > 10) {
     // "middle" orangeish background
     highColor =
-      (1 - (props.temp - midTempMin) / (midTempMax - midTempMin)) * 180;
+      (1 - (temperature  - midTempMin) / (midTempMax - midTempMin)) * 180;
     lowColor = 138;
     // Prepare background style
     tempBg = {
@@ -42,11 +43,11 @@ const WeatherCard = (props) => {
         rgb(255, ${lowColor}, 0)
         )`,
     };*/ else if (
-    props.temp < 12
+    temperature < 12
   ) {
     // "low" blueish background
     highColor =
-      (1 - (props.temp - lowTempMin) / (lowTempMax - lowTempMin)) * 255;
+      (1 - (temperature - lowTempMin) / (lowTempMax - lowTempMin)) * 255;
     lowColor = highColor / 150;
     // Prepare background style
     tempBg = {
@@ -61,7 +62,7 @@ const WeatherCard = (props) => {
   return (
     <div className="card" style={tempBg}>
       <Location />
-      <Icon condition={props.condition} />
+      <Icon condition={condition} />
       <Condition />
     </div>
   );

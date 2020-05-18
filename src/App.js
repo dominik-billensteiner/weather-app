@@ -5,8 +5,8 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <WeatherCard temp="5" condition="Clear" />
-      <WeatherCard temp="33" condition="Clouds" />
+      <WeatherCard temperature="5" condition="Clear" />
+      <WeatherCard temperature="33" condition="Clouds" />
     </div>
   );
 }

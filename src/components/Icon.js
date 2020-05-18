@@ -1,9 +1,9 @@
 import React from "react";
 
-const Icon = (props) => {
+const Icon = ({ condition }) => {
   let iconSrc = "";
 
-  switch (props.condition) {
+  switch (condition) {
     case "Clear":
       iconSrc = `./img/Mostly Sunny-2x.png`;
       break;
