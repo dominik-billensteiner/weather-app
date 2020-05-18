@@ -1,5 +1,7 @@
 import React from "react";
 import Location from "./Location";
+import Condition from "./Condition";
+import Icon from "./Icon";
 
 const highTempMax = 40;
 const highTempMin = 25;
@@ -59,9 +61,8 @@ const WeatherApp = (props) => {
   return (
     <div className="card" style={tempBg}>
       <Location />
-      <img className="icon" src="./img/cloudy.png" alt="Weather Icon" />
-      <h1 className="temperature">12 °C</h1>
-      <h3 className="condition">Cloudy</h3>
+      <Icon condition={props.condition} />
+      <Condition />
     </div>
   );
 };
