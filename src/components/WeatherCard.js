@@ -63,7 +63,7 @@ const WeatherCard = ({ temperature, condition }) => {
     <div className="card" style={tempBg}>
       <Location />
       <Icon condition={condition} />
-      <Condition />
+      <Condition temperature={temperature} condition={condition} />
     </div>
   );
 };
