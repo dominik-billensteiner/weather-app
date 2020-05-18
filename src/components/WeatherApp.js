@@ -1,4 +1,6 @@
 import React from "react";
+import Location from "./Location";
+
 const highTempMax = 40;
 const highTempMin = 25;
 //const midTempMax = 24;
@@ -56,10 +58,7 @@ const WeatherApp = (props) => {
 
   return (
     <div className="card" style={tempBg}>
-      <div className="card__location">
-        <h1 className="location__city">Vienna</h1>
-        <h3 className="location__country">AT</h3>
-      </div>
+      <Location />
       <img className="icon" src="./img/cloudy.png" alt="Weather Icon" />
       <h1 className="temperature">12 °C</h1>
       <h3 className="condition">Cloudy</h3>
