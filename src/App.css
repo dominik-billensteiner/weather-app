@@ -21,6 +21,12 @@
   text-align: center;
 }
 
+.card__form {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .location__city {
   font-weight: 300;
   font-size: 3rem;
