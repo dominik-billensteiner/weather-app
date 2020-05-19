@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import WeatherCard from "./components/WeatherCard";
 import "./App.css";
 
+// Default values
+const defaultLocation = "Linz, at";
+
 // Error handling
 const defaultErrMsg = "Whoops.";
 const connectionErrMsg = "Something went wrong, check your connection.";
@@ -9,7 +12,7 @@ const notFoundErrMsg = "Location not found. Check your input.";
 
 function App() {
   // State variable for input of city
-  const [cityInput, setCityInput] = useState("Linz,at");
+  const [cityInput, setCityInput] = useState(defaultLocation);
 
   // State variables for all displayed weather components
   const [weather, setWeather] = useState({
@@ -42,7 +45,7 @@ function App() {
     // Disable default behaviour of form
     e.preventDefault();
 
-    // Refresh data, when promise is resolved
+    // Set weather data, when promise is resolved
     data(cityInput).then((res) => {
       // Check if entered location has been found or other errors occured
       if (res.cod == "200") {
@@ -58,8 +61,7 @@ function App() {
         console.error(
           `Error occured while fetching weather data after city search - please check if your input is correct | ${res.cod}`
         );
-
-        // Set error info for user
+        // Display error message
         setWeather({
           city: defaultErrMsg,
           country: "",
@@ -72,8 +74,11 @@ function App() {
 
   // Query default city when componenent is mounted
   useEffect(() => {
+    // Set weather data, when promise is resolved
     data(cityInput).then((res) => {
+      // Check if data fetching was successful
       if (res) {
+        // Set retreived weather data
         setWeather({
           city: res.name,
           country: res.sys.country,
@@ -81,6 +86,7 @@ function App() {
           condition: res.weather[0].main,
         });
       } else {
+        // Problems with connection or API, display error message
         setWeather({
           city: defaultErrMsg,
           country: "",
