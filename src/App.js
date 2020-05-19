@@ -13,10 +13,10 @@ const notFoundErrMsg =
 const divErrMsg = "An Error occured. Please try again later or contact us.";
 
 function App() {
-  // State variable for input of city
-  const [cityInput, setCityInput] = useState(defaultLocation);
-
-  // State variables for all displayed weather components
+  // Initialize state variables
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [locationQuery, setLocationQuery] = useState(defaultLocation);
   const [weather, setWeather] = useState({
     city: null,
     country: null,
@@ -26,6 +26,9 @@ function App() {
 
   // Prepare data fetching from OpenWeather API
   const getWeather = async (location) => {
+    // Start loading
+    setLoading(true);
+
     try {
       // Fetch weather data of queried location in metric units
       const apiRes = await fetch(
@@ -44,6 +47,9 @@ function App() {
           condition: res.weather[0].main,
         });
       } else if (res.cod.toString() === "404") {
+        // Change error state
+        setError(true);
+
         // Location has not been found
         console.error(
           `Error occured while fetching weather data - please check if your location input is correct. | Error-Code: ${res.cod}`
@@ -56,6 +62,9 @@ function App() {
           condition: notFoundErrMsg,
         });
       } else {
+        // Change error state
+        setError(true);
+
         // Other error occured
         console.error(
           `Error occured while fetching weather data, contact user support. | Error-Code: ${res.cod}`
@@ -69,6 +78,9 @@ function App() {
         });
       }
     } catch (e) {
+      // Change error state
+      setError(true);
+
       // No responsive received, problems with connection/API
       console.error(
         `Error occured while fetching weather data - please check your internet connection. ${e}`
@@ -81,6 +93,9 @@ function App() {
         condition: connectionErrMsg,
       });
     }
+
+    // Loading completed
+    setLoading(false);
   };
 
   // Handles search of a user-queried location
@@ -89,7 +104,7 @@ function App() {
     e.preventDefault();
 
     // Get weather data by location from API
-    getWeather(cityInput);
+    getWeather(locationQuery);
   };
 
   // Query default city when componenent is mounted
@@ -99,20 +114,35 @@ function App() {
 
   // Return weather information as WeatherCard
   return (
-    <div className="App">
-      <WeatherCard
-        city={weather.city}
-        country={weather.country}
-        temperature={weather.temperature}
-        condition={weather.condition}
-      />
-      <form className="card__form">
-        <input
-          value={cityInput}
-          onChange={(e) => setCityInput(e.target.value)}
-        />
-        <button onClick={(e) => handleSearch(e)}>Search</button>
-      </form>
+    <div className="app">
+      {!loading ? (
+        <div className="app__container">
+          <WeatherCard
+            city={weather.city}
+            country={weather.country}
+            temperature={weather.temperature}
+            condition={weather.condition}
+          />
+          <form className="card__form">
+            <input
+              value={locationQuery}
+              onChange={(e) => setLocationQuery(e.target.value)}
+            />
+            <button onClick={(e) => handleSearch(e)}>Search</button>
+          </form>
+        </div>
+      ) : loading ? (
+        <div className="app__loading">Loading</div>
+      ) : null}
+
+      {error && !loading ? (
+        <div className="app__error">
+          <span>Whoops! Something went wrong.</span>
+          <div className="btn" onClick={() => setError(false)}>
+            Retry
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
