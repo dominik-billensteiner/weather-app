@@ -8,7 +8,9 @@ const defaultLocation = "Linz, at";
 // Error handling
 const defaultErrMsg = "Whoops.";
 const connectionErrMsg = "Something went wrong, check your connection.";
-const notFoundErrMsg = "Location not found. Check your input.";
+const notFoundErrMsg =
+  "Location not found, check your typing. Example: London,gb";
+const divErrMsg = "An Error occured. Please try again later or contact us.";
 
 function App() {
   // State variable for input of city
@@ -23,43 +25,28 @@ function App() {
   });
 
   // Prepare data fetching from OpenWeather API
-  const data = async (query) => {
+  const getWeather = async (location) => {
     try {
-      return (
-        // Weather data of queried location in metric units
-        (
-          await fetch(
-            `http://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&APPID=7361f9a0de8a8b42fbc6b557cc6c0fa1`
-          )
-        ).json()
+      // Fetch weather data of queried location in metric units
+      const apiRes = await fetch(
+        `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=7361f9a0de8a8b42fbc6b557cc6c0fa1`
       );
-    } catch (e) {
-      console.error(
-        `Error occured while fetching weather data - please check your internet connection | ${e}`
-      );
-    }
-  };
 
-  // Handles search of a user-queried location
-  const handleSearch = (e) => {
-    // Disable default behaviour of form
-    e.preventDefault();
+      // Convert response to JSON
+      const res = await apiRes.json();
 
-    // Set weather data, when promise is resolved
-    data(cityInput).then((res) => {
-      // Check if entered location has been found or other errors occured
-      if (res.cod == "200") {
-        // Set retreived weater data
+      if (res.cod.toString() === "200") {
+        // Successful request, display retreived weather data
         setWeather({
           city: res.name,
           country: res.sys.country,
           temperature: res.main.temp,
           condition: res.weather[0].main,
         });
-      } else {
-        // Log error msg
+      } else if (res.cod.toString() === "404") {
+        // Location has not been found
         console.error(
-          `Error occured while fetching weather data after city search - please check if your input is correct | ${res.cod}`
+          `Error occured while fetching weather data - please check if your location input is correct. | Error-Code: ${res.cod}`
         );
         // Display error message
         setWeather({
@@ -68,34 +55,47 @@ function App() {
           temperature: "0",
           condition: notFoundErrMsg,
         });
-      }
-    });
-  };
-
-  // Query default city when componenent is mounted
-  useEffect(() => {
-    // Set weather data, when promise is resolved
-    data(cityInput).then((res) => {
-      // Check if data fetching was successful
-      if (res) {
-        // Set retreived weather data
-        setWeather({
-          city: res.name,
-          country: res.sys.country,
-          temperature: res.main.temp,
-          condition: res.weather[0].main,
-        });
       } else {
-        // Problems with connection or API, display error message
+        // Other error occured
+        console.error(
+          `Error occured while fetching weather data, contact user support. | Error-Code: ${res.cod}`
+        );
+        // Display error message
         setWeather({
           city: defaultErrMsg,
           country: "",
           temperature: "0",
-          condition: connectionErrMsg,
+          condition: divErrMsg,
         });
       }
-    });
-  }, []);
+    } catch (e) {
+      // No responsive received, problems with connection/API
+      console.error(
+        `Error occured while fetching weather data - please check your internet connection. ${e}`
+      );
+      // Display error message
+      setWeather({
+        city: defaultErrMsg,
+        country: "",
+        temperature: "0",
+        condition: connectionErrMsg,
+      });
+    }
+  };
+
+  // Handles search of a user-queried location
+  const handleSearch = (e) => {
+    // Disable default behaviour of form
+    e.preventDefault();
+
+    // Get weather data by location from API
+    getWeather(cityInput);
+  };
+
+  // Query default city when componenent is mounted
+  useEffect(() => {
+    getWeather(defaultLocation);
+  }, [defaultLocation]);
 
   // Return weather information as WeatherCard
   return (
