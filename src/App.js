@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import WeatherCard from "./components/WeatherCard";
 import "./App.css";
 
+// Error handling
+const defaultErrMsg = "Whoops.";
+const connectionErrMsg = "Something went wrong, check your connection.";
+const notFoundErrMsg = "Location not found. Check your input.";
+
 function App() {
   // State variable for input of city
   const [cityInput, setCityInput] = useState("Linz,at");
@@ -26,38 +31,63 @@ function App() {
         ).json()
       );
     } catch (e) {
-      console.error(e);
+      console.error(
+        `Error occured while fetching weather data - please check your internet connection | ${e}`
+      );
     }
   };
 
-  // Search function
+  // Handles search of a user-queried location
   const handleSearch = (e) => {
     // Disable default behaviour of form
     e.preventDefault();
+
     // Refresh data, when promise is resolved
     data(cityInput).then((res) => {
-      console.log(res);
-      if (!res.ok && res.cod !== "404")
+      // Check if entered location has been found or other errors occured
+      if (res.cod == "200") {
+        // Set retreived weater data
         setWeather({
           city: res.name,
           country: res.sys.country,
           temperature: res.main.temp,
           condition: res.weather[0].main,
         });
-      // else throw new Error(res.status);
-      else console.error(res.status);
+      } else {
+        // Log error msg
+        console.error(
+          `Error occured while fetching weather data after city search - please check if your input is correct | ${res.cod}`
+        );
+
+        // Set error info for user
+        setWeather({
+          city: defaultErrMsg,
+          country: "",
+          temperature: "0",
+          condition: notFoundErrMsg,
+        });
+      }
     });
   };
 
   // Query default city when componenent is mounted
   useEffect(() => {
     data(cityInput).then((res) => {
-      setWeather({
-        city: res.name,
-        country: res.sys.country,
-        temperature: res.main.temp,
-        condition: res.weather[0].main,
-      });
+      if (res) {
+        setWeather({
+          city: res.name,
+          country: res.sys.country,
+          temperature: res.main.temp,
+          condition: res.weather[0].main,
+        });
+      } else {
+        setWeather({
+          city: defaultErrMsg,
+          country: "",
+          temperature: "0",
+          condition: connectionErrMsg,
+        });
+      }
     });
   }, []);
 
