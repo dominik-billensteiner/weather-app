@@ -125,6 +125,7 @@ function App() {
           />
           <form className="card__form">
             <input
+              className="card__input"
               value={locationQuery}
               onChange={(e) => setLocationQuery(e.target.value)}
             />
