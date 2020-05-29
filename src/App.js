@@ -18,8 +18,8 @@ function App() {
   const [error, setError] = useState(false);
   const [locationQuery, setLocationQuery] = useState(defaultLocation);
   const [weather, setWeather] = useState({
-    city: null,
-    country: null,
+    city: "",
+    country: "",
     temperature: null,
     condition: null,
   });
