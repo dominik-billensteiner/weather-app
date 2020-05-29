@@ -104,6 +104,7 @@ function App() {
     e.preventDefault();
 
     // Get weather data by location from API
+    console.log(locationQuery);
     getWeather(locationQuery);
   };
 
@@ -118,19 +119,14 @@ function App() {
       {!loading ? (
         <div className="app__container">
           <WeatherCard
+            locationQuery={locationQuery}
+            setLocationQuery={setLocationQuery}
+            handleSearch={handleSearch}
             city={weather.city}
             country={weather.country}
             temperature={weather.temperature}
             condition={weather.condition}
           />
-          <form className="card__form">
-            <input
-              className="card__input"
-              value={locationQuery}
-              onChange={(e) => setLocationQuery(e.target.value)}
-            />
-            <button onClick={(e) => handleSearch(e)}>Search</button>
-          </form>
         </div>
       ) : loading ? (
         <div className="app__loading">Loading</div>

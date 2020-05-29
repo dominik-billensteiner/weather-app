@@ -58,12 +58,12 @@
 
 .card__location {
   text-align: center;
+  position: relative;
+  width: 300px;
 }
 
-.card__form {
-  position: absolute;
-  top: 0;
-  left: 0;
+.card__button {
+  display: none;
 }
 
 .card__input {
@@ -73,9 +73,18 @@
   font-size: 3rem;
   font-weight: 300;
   letter-spacing: 0.1rem;
-  padding: 1rem;
+  color: white;
+  text-align: center;
+  width: 100%;
+  padding: 0 0.5rem;
   box-sizing: border-box;
+  background: transparent;
   border: none;
+  transition: 0.4s all ease-in-out;
+}
+
+.card__input:focus {
+  text-decoration: underline;
 }
 
 .location__city,
